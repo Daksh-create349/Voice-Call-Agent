@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Get a free call from our interior design consultants." />
+  <title>Designing your new flat?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #f97316;
+      --accent-dark: #ea6a00;
+      --bg: #f5f5f4;
+      --card: #ffffff;
+      --text: #1c1917;
+      --muted: #78716c;
+      --border: #e7e5e4;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1.5rem 4rem;
+      gap: 2rem;
+    }
+
+    .page-wrap {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+
+    .card h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p.subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 1.1rem;
+    }
+
+    label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    label .optional {
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 0.25rem;
+    }
+
+    input {
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fafaf9;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+    }
+
+    input::placeholder { color: #a8a29e; }
+
+    button#call-btn {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    button#call-btn:hover:not(:disabled) { background: var(--accent-dark); }
+    button#call-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    #status {
+      margin-top: 1.1rem;
+      font-size: 0.875rem;
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      display: none;
+      line-height: 1.5;
+    }
+
+    #status.calling {
+      display: block;
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+    }
+
+    #status.success {
+      display: block;
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    #status.error {
+      display: block;
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* Transcript panel */
+    #transcript-panel {
+      display: none;
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+
+    #transcript-panel h2 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .transcript-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .utterance {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.65rem;
+      align-items: flex-start;
+    }
+
+    .utterance .speaker {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .utterance.agent .speaker  { background: #fff7ed; color: var(--accent-dark); }
+    .utterance.user  .speaker  { background: #f0f9ff; color: #0369a1; }
+    .utterance.unknown .speaker{ background: #f4f4f5; color: #52525b; }
+
+    .utterance .text {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    /* Lead summary card */
+    #lead-summary {
+      display: none;
+      margin-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+
+    #lead-summary h2 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .lead-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .lead-item {
+      background: #fafaf9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.8rem;
+    }
+
+    .lead-item .lead-q {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
+    }
+
+    .lead-item .lead-a {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .lead-item .lead-a.yes  { color: #15803d; }
+    .lead-item .lead-a.no   { color: #b91c1c; }
+    .lead-item .lead-a.unknown { color: var(--muted); font-weight: 400; font-style: italic; }
+
+    #lead-analyzing {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── History panel ──────────────────────────────────────────────── */
+    #history-panel {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    #history-panel h2 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    #history-empty {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .history-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: border-color 0.2s;
+    }
+
+    .history-card:hover { border-color: rgba(249,115,22,0.35); }
+
+    .history-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .history-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .history-phone {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .history-time {
+      font-size: 0.72rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      margin-bottom: 0.5rem;
+    }
+
+    .status-badge.completed { background: #dcfce7; color: #15803d; }
+    .status-badge.initiated  { background: #fff7ed; color: #c2410c; }
+    .status-badge.other      { background: #f4f4f5; color: #52525b; }
+
+    .history-duration {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .history-analysis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .ha-item {
+      background: #fafaf9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+    }
+
+    .ha-q { font-size: 0.65rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.15rem; }
+    .ha-a { font-size: 0.8rem;  font-weight: 600; color: var(--text); }
+    .ha-a.yes     { color: #15803d; }
+    .ha-a.no      { color: #b91c1c; }
+    .ha-a.unknown { color: var(--muted); font-weight: 400; font-style: italic; }
+
+    details.transcript-toggle {
+      margin-top: 0.5rem;
+    }
+
+    details.transcript-toggle summary {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent-dark);
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+    }
+
+    details.transcript-toggle summary::before {
+      content: '▶ ';
+      font-size: 0.6rem;
+    }
+
+    details.transcript-toggle[open] summary::before {
+      content: '▼ ';
+    }
+
+    details.transcript-toggle .transcript-lines {
+      margin-top: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+  <div class="card">
+    <h1>Designing your new flat?</h1>
+    <p class="subtitle">Leave your number and we'll call you in seconds with tailored advice — no waiting, no hold music.</p>
+
+    <form id="call-form" novalidate>
+      <div class="field">
+        <label for="name">Your name <span class="optional">(optional)</span></label>
+        <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone_number"
+          placeholder="+1 555 000 0000"
+          autocomplete="tel"
+          required
+        />
+      </div>
+
+      <button type="submit" id="call-btn">Call me now</button>
+    </form>
+
+    <div id="status" role="alert" aria-live="polite"></div>
+
+    <div id="transcript-panel" aria-live="polite">
+      <h2>Call transcript</h2>
+      <p class="transcript-meta" id="transcript-meta"></p>
+      <div id="transcript-body"></div>
+    </div>
+
+    <div id="lead-summary" aria-live="polite">
+      <h2>Lead summary</h2>
+      <p id="lead-analyzing">Analysing call…</p>
+      <div id="lead-grid" class="lead-grid" style="display:none"></div>
+    </div>
+  </div><!-- /.card -->
+
+  <div id="history-panel">
+    <h2>Call history</h2>
+    <p id="history-empty" style="display:none">No calls yet.</p>
+    <div id="history-list"></div>
+  </div>
+
+  </div><!-- /.page-wrap -->
+
+  <script>
+    const form              = document.getElementById('call-form');
+    const btn               = document.getElementById('call-btn');
+    const statusEl          = document.getElementById('status');
+    const transcriptPanel   = document.getElementById('transcript-panel');
+    const transcriptBody    = document.getElementById('transcript-body');
+    const transcriptMeta    = document.getElementById('transcript-meta');
+    const leadSummary       = document.getElementById('lead-summary');
+    const leadAnalyzing     = document.getElementById('lead-analyzing');
+    const leadGrid          = document.getElementById('lead-grid');
+    const historyList       = document.getElementById('history-list');
+    const historyEmpty      = document.getElementById('history-empty');
+
+    // Short labels for each question (same order as ANALYZE_QUESTIONS in app.py)
+    const LEAD_LABELS = [
+      'Work required',
+      'Start timeline',
+      'Agreed to meeting?',
+      'Time preference',
+    ];
+
+    const MAX_POLLS   = 36;   // 36 × 5s = 3 minutes
+    const POLL_MS     = 5000;
+
+    function setStatus(type, message) {
+      statusEl.className   = type;
+      statusEl.textContent = message;
+    }
+
+    // ── Polling ────────────────────────────────────────────────────────────
+    function startPolling(callId) {
+      let tries = 0;
+
+      const interval = setInterval(async () => {
+        tries++;
+
+        try {
+          const res  = await fetch(`/api/call/${callId}`);
+          const data = await res.json();
+
+          if (!res.ok) {
+            clearInterval(interval);
+            setStatus('error', '❌ Could not fetch call status.');
+            btn.disabled    = false;
+            btn.textContent = 'Call me now';
+            return;
+          }
+
+          const callStatus  = (data.status || '').toLowerCase();
+          const queueStatus = ((data.raw || {}).queue_status || '').toLowerCase();
+          const isDone      = callStatus === 'completed' || queueStatus === 'complete';
+
+          if (isDone) {
+            clearInterval(interval);
+            btn.disabled    = false;
+            btn.textContent = 'Call me now';
+            setStatus('success', '✅ Call completed!');
+            renderTranscript(data, callId);
+            return;
+          }
+
+          // Update status label while waiting
+          const elapsed = tries * (POLL_MS / 1000);
+          setStatus('calling', `📞 Call in progress… (${elapsed}s elapsed, status: ${callStatus || 'queued'})`);
+
+        } catch (err) {
+          // Network blip — keep trying until max polls
+        }
+
+        if (tries >= MAX_POLLS) {
+          clearInterval(interval);
+          btn.disabled    = false;
+          btn.textContent = 'Call me now';
+          setStatus('success', '✅ Call started — transcript will appear once the call ends. Refresh to check again.');
+        }
+      }, POLL_MS);
+    }
+
+    // ── Transcript renderer ────────────────────────────────────────────────
+    function renderTranscript(data, callId) {
+      const transcript = data.transcript || [];
+      const length     = data.call_length;
+
+      transcriptMeta.textContent = length != null
+        ? `Call duration: ${Math.round(length)} seconds`
+        : '';
+
+      transcriptBody.innerHTML = '';
+
+      if (!transcript.length) {
+        transcriptBody.innerHTML = '<p style="font-size:0.85rem;color:var(--muted)">No transcript available.</p>';
+      } else if (typeof transcript === 'string') {
+        // Plain-string fallback
+        const p = document.createElement('p');
+        p.style.fontSize  = '0.875rem';
+        p.style.lineHeight = '1.6';
+        p.textContent = transcript;
+        transcriptBody.appendChild(p);
+      } else {
+        transcript.forEach(({ speaker, text }) => {
+          const speakerLower = (speaker || '').toLowerCase();
+          const roleClass    = speakerLower === 'assistant' || speakerLower === 'agent'
+            ? 'agent'
+            : speakerLower === 'user'
+            ? 'user'
+            : 'unknown';
+
+          const label = roleClass === 'agent' ? 'Aanya' : roleClass === 'user' ? 'You' : speaker;
+
+          const div = document.createElement('div');
+          div.className = `utterance ${roleClass}`;
+          div.innerHTML = `<span class="speaker">${label}</span><span class="text">${text}</span>`;
+          transcriptBody.appendChild(div);
+        });
+      }
+
+      transcriptPanel.style.display = 'block';
+
+      // Kick off analysis after transcript renders
+      analyzeCall(callId);
+    }
+
+    // ── Lead summary ───────────────────────────────────────────────────────
+    async function analyzeCall(callId) {
+      if (!callId) return;
+
+      leadSummary.style.display = 'block';
+      leadAnalyzing.style.display = 'block';
+      leadGrid.style.display      = 'none';
+      leadGrid.innerHTML          = '';
+
+      try {
+        const res  = await fetch(`/api/call/${callId}/analyze`, { method: 'POST' });
+        const data = await res.json();
+
+        leadAnalyzing.style.display = 'none';
+
+        // Bland returns answers under `answers` array (same order as questions)
+        const answers = data.answers || [];
+
+        if (!answers.length) {
+          leadAnalyzing.style.display = 'block';
+          leadAnalyzing.textContent   = 'No analysis data available.';
+          return;
+        }
+
+        LEAD_LABELS.forEach((label, i) => {
+          const raw = answers[i];
+          const item = document.createElement('div');
+          item.className = 'lead-item';
+
+          let displayVal, valClass = '';
+          if (raw === null || raw === undefined || raw === '') {
+            displayVal = 'Not mentioned';
+            valClass   = 'unknown';
+          } else if (typeof raw === 'boolean') {
+            displayVal = raw ? 'Yes ✓' : 'No ✗';
+            valClass   = raw ? 'yes' : 'no';
+          } else {
+            displayVal = String(raw);
+          }
+
+          item.innerHTML = `
+            <div class="lead-q">${label}</div>
+            <div class="lead-a ${valClass}">${displayVal}</div>
+          `;
+          leadGrid.appendChild(item);
+        });
+
+        leadGrid.style.display = 'grid';
+
+      } catch (err) {
+        leadAnalyzing.textContent = 'Could not load lead summary.';
+      }
+
+      // Refresh history after analysis is saved
+      fetchHistory();
+    }
+
+    // ── Form submit ────────────────────────────────────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Hide any previous transcript + lead summary
+      transcriptPanel.style.display = 'none';
+      transcriptBody.innerHTML      = '';
+      leadSummary.style.display     = 'none';
+      leadGrid.innerHTML            = '';
+
+      const name  = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!phone) {
+        setStatus('error', 'Please enter your phone number.');
+        return;
+      }
+
+      btn.disabled    = true;
+      btn.textContent = 'Calling…';
+      setStatus('calling', '📞 Calling… this usually takes a few seconds.');
+
+      try {
+        const res  = await fetch('/api/call', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ name, phone_number: phone }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          const callId = data.call_id;
+          setStatus('calling', '📞 Call started! Waiting for it to complete…');
+          form.reset();
+
+          if (callId) {
+            startPolling(callId);
+          } else {
+            // No call_id returned — fall back to simple success
+            btn.disabled    = false;
+            btn.textContent = 'Call me now';
+            setStatus('success', '✅ ' + (data.message || "You'll receive a call shortly!"));
+          }
+        } else {
+          setStatus('error', '❌ ' + (data.error || 'Something went wrong. Please try again.'));
+          btn.disabled    = false;
+          btn.textContent = 'Call me now';
+        }
+      } catch (err) {
+        setStatus('error', '❌ Network error — please check your connection and try again.');
+        btn.disabled    = false;
+        btn.textContent = 'Call me now';
+      }
+    });
+
+    // ── History ────────────────────────────────────────────────────────
+    async function fetchHistory() {
+      try {
+        // First backfill any calls that completed after the poll window
+        const refreshRes = await fetch('/api/history/refresh', { method: 'POST' });
+        const refreshData = await refreshRes.json();
+        renderHistory(refreshData.records || []);
+      } catch (err) {
+        // fallback: just read what's stored
+        try {
+          const res     = await fetch('/api/history');
+          const records = await res.json();
+          renderHistory(records);
+        } catch (_) {}
+      }
+    }
+
+    function fmtTime(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      return d.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function renderHistory(records) {
+      historyList.innerHTML = '';
+
+      if (!records || !records.length) {
+        historyEmpty.style.display = 'block';
+        return;
+      }
+
+      historyEmpty.style.display = 'none';
+
+      records.forEach(r => {
+        const status     = (r.status || 'initiated').toLowerCase();
+        const badgeClass = status === 'completed' ? 'completed' : status === 'initiated' ? 'initiated' : 'other';
+        const analysis   = r.analysis || {};
+        const transcript = r.transcript || [];
+
+        // ── Analysis grid
+        const analysisKeys = Object.keys(analysis);
+        let analysisHTML = '';
+        if (analysisKeys.length) {
+          analysisHTML = `<div class="history-analysis">${
+            analysisKeys.map(k => {
+              const val = analysis[k];
+              let display, cls = '';
+              if (val === null || val === undefined || val === '') {
+                display = 'Not mentioned'; cls = 'unknown';
+              } else if (typeof val === 'boolean') {
+                display = val ? 'Yes ✓' : 'No ✗'; cls = val ? 'yes' : 'no';
+              } else {
+                display = String(val);
+              }
+              return `<div class="ha-item"><div class="ha-q">${k}</div><div class="ha-a ${cls}">${display}</div></div>`;
+            }).join('')
+          }</div>`;
+        }
+
+        // ── Transcript accordion
+        let transcriptHTML = '';
+        if (transcript.length) {
+          const lines = transcript.map(u => {
+            const sl = (u.speaker || '').toLowerCase();
+            const role = sl === 'assistant' || sl === 'agent' ? 'agent'
+                       : sl === 'user' || sl === 'human'     ? 'user' : 'unknown';
+            const label = role === 'agent' ? 'Aanya' : role === 'user' ? 'You' : u.speaker;
+            return `<div class="utterance ${role}"><span class="speaker">${label}</span><span class="text">${u.text}</span></div>`;
+          }).join('');
+          transcriptHTML = `
+            <details class="transcript-toggle">
+              <summary>View transcript (${transcript.length} turns)</summary>
+              <div class="transcript-lines">${lines}</div>
+            </details>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+          <div class="history-card-header">
+            <div>
+              <div class="history-name">${r.name || 'Anonymous'}</div>
+              <div class="history-phone">${r.phone || '—'}</div>
+            </div>
+            <div class="history-time">${fmtTime(r.initiated_at)}</div>
+          </div>
+          <span class="status-badge ${badgeClass}">${status}</span>
+          ${r.call_length != null ? `<div class="history-duration">⏱ ${Math.round(r.call_length)}s</div>` : ''}
+          ${analysisHTML}
+          ${transcriptHTML}
+        `;
+        historyList.appendChild(card);
+      });
+    }
+
+    // Load history on page open
+    fetchHistory();
+  </script>
+
+</body>
+</html>
