@@ -261,9 +261,47 @@ cp .env.example .env
 
 Open `.env` and fill in your credentials. See the Configuration section below.
 
+## Getting Your Bland AI Credentials
+
+This project uses Bland AI to place real phone calls. You need two things from Bland AI: an API key and a voice ID. Both are free to obtain and the platform provides free credits to get started.
+
+### Step 1 — Create a Bland AI Account
+
+Go to https://app.bland.ai and sign up for a free account. You will need to verify your email address before you can access the dashboard.
+
+### Step 2 — Get Your API Key
+
+1. Once logged in, open the left sidebar and click on your account name or the settings icon.
+2. Navigate to the "API Keys" or "Developer" section.
+3. Click "Create new key" or "Generate API key".
+4. Copy the key immediately. It will only be shown once in full. The key starts with `org_`.
+5. Paste this value as `BLAND_API_KEY` in your `.env` file.
+
+### Step 3 — Choose a Voice ID
+
+Bland AI provides a library of pre-built AI voices. To find a voice that suits the agent persona:
+
+1. In the Bland AI dashboard, go to the "Voices" section in the sidebar.
+2. Browse the available voices and use the play button to preview each one.
+3. Select a voice that sounds natural and appropriate for a warm, conversational agent.
+4. Click on the voice to open its detail page. The voice ID is shown on this page and looks like a UUID, for example: `095a1518-ecdf-4870-a5ff-c74b43a08764`.
+5. Copy this ID and paste it as `BLAND_VOICE` in your `.env` file.
+
+Alternatively, you can retrieve all available voices programmatically by calling:
+
+```
+GET https://api.bland.ai/v1/voices
+Authorization: your_api_key
+```
+
+### Step 4 — Note on Free Credits
+
+Bland AI provides a limited number of free credits when you sign up. Each outbound call consumes credits based on call duration. Once the free credits are exhausted, calls will fail unless you add billing information to your account. The application will return an error from the `/api/call` endpoint when this happens.
+
 ---
 
 ## Configuration
+
 
 The application reads all secrets and settings from the `.env` file in the project root. Never commit this file to version control.
 
