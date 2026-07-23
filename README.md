@@ -24,21 +24,21 @@ The AI agent places a real cellular phone call to the user within seconds, condu
 
 ---
 
-## Architectural Migration: Bland AI to Vapi AI
+## Architectural Migration & Failover Rationale: Bland AI and Vapi AI
 
-The system was initially built using **Bland AI** and subsequently migrated to **Vapi AI** combined with **Twilio PSTN**.
+The system was initially built using **Bland AI** and subsequently upgraded to **Vapi AI** combined with **Twilio PSTN**. It currently operates a **Hybrid Multi-Telephony Architecture**.
 
-### Rationale for Migration
+### Rationale for Migration to Vapi AI
+1. **Superior Hindi and Hinglish Accent Synthesis**: Bland AI's internal speech synthesis generated flatter inflections when handling Indian names. Migrating to Vapi AI enabled utilizing Vapi's native voice model (*Naina*), delivering natural phonetic pronunciation and authentic conversational fillers (*"haan"*, *"theek hai"*).
+2. **Carrier Control via Twilio PSTN Integration**: Vapi AI allowed bridging a dedicated **Twilio PSTN gateway**, providing complete visibility over SIP signaling, carrier routing, and call log diagnostics for Indian cellular networks.
+3. **Sub-500ms Response Latency and Barge-In Detection**: Vapi AI provides sub-500ms response latency and native barge-in detection, halting audio playback instantly if interrupted.
 
-1. **Superior Hindi and Hinglish Accent Synthesis**
-   Bland AI's internal speech synthesis generated flatter, monotone inflections when handling Indian names and Hinglish phrases. Migrating to Vapi AI enabled utilizing **Vapi's native voice model** (*Naina*), delivering natural phonetic pronunciation, realistic intonations, and authentic conversational fillers (*"haan"*, *"theek hai"*).
+### Hybrid Multi-Telephony & Automatic Bland AI Failover
+To guarantee 100% call delivery uptime and eliminate carrier single-points-of-failure:
+- **Primary Pipeline (Vapi AI + Twilio PSTN)**: Handles outbound dialing with ultra-low latency and realistic Hindi voice synthesis.
+- **Automated Secondary Failover (Bland AI)**: If the primary Vapi/Twilio pipeline encounters a carrier drop, unverified number restriction, or network timeout, the Flask backend detects the failure within 3 seconds and automatically dispatches an outbound call via **Bland AI**.
+- **Seamless UI Polling Transition**: The frontend JavaScript polling detects the fallback signal, switches to the secondary call ID, and maintains the live call visualizer without presenting errors to the user.
 
-
-2. **Carrier Control via Twilio PSTN Integration**
-   Bland AI provided limited control over outbound caller IDs and underlying carrier trunks. Vapi AI allowed bridging a dedicated **Twilio PSTN gateway**, giving complete visibility over SIP signaling, carrier routing, and call log diagnostics for Indian cellular networks.
-
-3. **Sub-500ms Response Latency and Barge-In Detection**
-   Vapi AI's orchestration architecture provided sub-500ms turn-taking latency. It natively handles **barge-in detection**—if a user interrupts the AI mid-sentence, Vapi instantly halts audio playback and processes the caller's input without clipping.
 
 ---
 

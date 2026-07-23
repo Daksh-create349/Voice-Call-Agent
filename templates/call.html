@@ -743,6 +743,13 @@
             return;
           }
 
+          if (data.fallback && data.call_id) {
+            callId = data.call_id;
+            tries = 0;
+            setStatus('calling', 'Connecting call via backup telecom carrier…');
+            return;
+          }
+
           const callStatus  = (data.status || '').toLowerCase();
           const queueStatus = ((data.raw || {}).queue_status || '').toLowerCase();
           const isDone      = callStatus === 'completed' || queueStatus === 'complete';
@@ -751,10 +758,18 @@
             clearInterval(interval);
             btn.disabled  = false;
             btn.innerHTML = '<span>Call Me Now</span>';
-            setStatus('success', '✅ Call completed successfully!');
+            const transcript = data.transcript || [];
+            if (!transcript.length && (data.call_length || 0) < 3) {
+              setStatus('error', '⚠️ Call ended without connecting. Click Call Me Now to try again.');
+            } else {
+              setStatus('success', '✅ Call completed successfully!');
+            }
             renderTranscript(data, callId);
             return;
           }
+
+
+
 
           const elapsed = tries * (POLL_MS / 1000);
           setStatus('calling', `Call in progress… (${elapsed}s elapsed, status: ${callStatus || 'queued'})`);

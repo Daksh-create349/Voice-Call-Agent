@@ -213,15 +213,13 @@ def make_call():
     else:
         if name:
             first_sentence = (
-                f"Hi, am I speaking with {name}? "
-                "This is Aanya calling from Sunrise Interiors, about the enquiry you just submitted "
-                "on our website — is this an okay time to talk for a couple of minutes?"
+                f"Namaste {name}! This is Aanya calling from Sunrise Interiors regarding the interior design enquiry you submitted on our website — is this a good time to chat for a minute?"
             )
         else:
             first_sentence = (
-                "Hi there, this is Aanya calling from Sunrise Interiors, about the enquiry you just "
-                "submitted on our website — is this an okay time to talk for a couple of minutes?"
+                "Namaste! This is Aanya calling from Sunrise Interiors regarding the interior design enquiry you submitted on our website — is this a good time to chat for a minute?"
             )
+
 
         payload = {
             "phone_number":      phone_number,
@@ -334,16 +332,25 @@ def get_call(call_id):
             ended_reason = (raw.get("endedReason") or "").lower()
             is_done  = status in ["ended", "completed"]
 
-            # If Twilio trial dropped/failed unverified call, auto-fallback to Bland AI
-            if is_done and "twilio" in ended_reason and "fail" in ended_reason and not record.get("fallback_triggered"):
+            transcript  = parse_vapi_transcript(raw)
+            call_length = parse_vapi_duration(raw)
+
+            # Fallback to Bland AI if Vapi/Twilio dropped the call or generated no transcript
+            is_failed_vapi = is_done and (
+                not transcript or len(transcript) == 0 or
+                any(w in ended_reason for w in ["twilio", "fail", "provider", "busy", "no-answer", "error", "closed", "declined"])
+            )
+
+            if is_failed_vapi and not record.get("fallback_triggered"):
                 phone_num = record.get("phone")
                 name_val  = record.get("name", "")
                 if phone_num and BLAND_API_KEY:
                     try:
+                        greeting_name = f"Namaste {name_val}!" if name_val else "Namaste!"
                         bland_payload = {
                             "phone_number":      phone_num,
                             "task":              TASK.strip(),
-                            "first_sentence":    f"Hi {name_val}, this is Aanya calling from Sunrise Interiors for your enquiry!" if name_val else "Hi, this is Aanya calling from Sunrise Interiors for your enquiry!",
+                            "first_sentence":    f"{greeting_name} This is Aanya calling from Sunrise Interiors regarding the interior design enquiry you submitted on our website. Is this a good time to chat for a minute?",
                             "voice":             BLAND_VOICE,
                             "language":          "hi",
                             "wait_for_greeting": True,
@@ -351,6 +358,7 @@ def get_call(call_id):
                             "record":            True
                         }
                         fb_resp = http_requests.post(BLAND_API_URL, json=bland_payload, headers=bland_headers(), timeout=10)
+
                         if fb_resp.ok:
                             fb_data = fb_resp.json()
                             new_call_id = fb_data.get("call_id")
@@ -381,9 +389,6 @@ def get_call(call_id):
                                 }), 200
                     except Exception:
                         pass
-
-            transcript  = parse_vapi_transcript(raw)
-            call_length = parse_vapi_duration(raw)
 
             if is_done:
                 upsert_record({
