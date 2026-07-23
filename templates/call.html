@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sunrise Interiors - Instant AI Voice Call Assistant Portal." />
+  <title>Sunrise Interiors — AI Voice Call Assistant</title>
+  
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-light: #faf8f5;
+      --bg-white: #ffffff;
+      --bg-subtle: #f3eee7;
+      --border: #ebdcd0;
+      --border-focus: #f97316;
+      --accent: #ea580c;
+      --accent-light: #fff7ed;
+      --accent-gradient: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+      --gold: #d97706;
+      --text-dark: #1e1b18;
+      --text-muted: #6b635b;
+      --text-dim: #9c9288;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 4px 20px rgba(217, 119, 6, 0.06);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.06);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-light);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(249, 115, 22, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(217, 119, 6, 0.04) 0%, transparent 40%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Navbar ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.25);
+    }
+
+    .logo-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #ffffff;
+    }
+
+    .brand-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text span {
+      color: var(--accent);
+    }
+
+    .btn-back {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 99px;
+      background: var(--bg-subtle);
+      transition: all 0.2s;
+    }
+
+    .btn-back:hover {
+      background: var(--border);
+      color: var(--text-dark);
+    }
+
+    /* ── Main Layout ── */
+    .wrapper {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    .page-title-sec {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 0.4rem 1.1rem;
+      border-radius: 99px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .ai-badge .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.6); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(234, 88, 12, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+    }
+
+    .page-title-sec h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-title-sec p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Split Grid ── */
+    .portal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .portal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .white-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .card-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .card-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group label span.opt {
+      color: var(--text-dim);
+      font-weight: 400;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--text-dim);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.8rem;
+      background: var(--bg-light);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-dark);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--border-focus);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-dim);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 0.75rem;
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(234, 88, 12, 0.3);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(234, 88, 12, 0.45);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Status indicator */
+    #status {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    #status.calling {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #c2410c;
+    }
+
+    #status.success {
+      display: block;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+    }
+
+    #status.error {
+      display: block;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+    }
+
+    .wave-box {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .wave-bar {
+      width: 3px;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: wave 1.2s ease-in-out infinite alternate;
+    }
+
+    .wave-bar:nth-child(2) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.1s; }
+
+    @keyframes wave {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    /* Live Transcript */
+    #transcript-panel {
+      display: none;
+      margin-top: 1.75rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .transcript-meta {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .utterance-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .utterance {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .utterance .speaker-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .utterance.agent .speaker-tag {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #ffedd5;
+    }
+
+    .utterance.user .speaker-tag {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+    }
+
+    .utterance .text-bubble {
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-sm);
+      line-height: 1.5;
+    }
+
+    /* Lead Summary */
+    #lead-summary {
+      display: none;
+      margin-top: 1.75rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    #lead-analyzing {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .lead-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .lead-item {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.9rem;
+    }
+
+    .lead-q {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.2rem;
+    }
+
+    .lead-a {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .lead-a.yes { color: #16a34a; }
+    .lead-a.no { color: #dc2626; }
+    .lead-a.unknown { color: var(--text-dim); font-weight: 400; font-style: italic; }
+
+    /* Call History */
+    #history-panel h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.25rem;
+    }
+
+    #history-empty {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .history-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .history-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.65rem;
+    }
+
+    .history-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .history-phone {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .history-time {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      margin-bottom: 0.65rem;
+    }
+
+    .status-badge.completed { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .status-badge.initiated { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .status-badge.other     { background: #f4f4f5; color: #52525b; border: 1px solid #e4e4e7; }
+
+    .history-duration {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .history-analysis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ha-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+    }
+
+    .ha-q { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    .ha-a { font-size: 0.8rem; font-weight: 700; color: var(--text-dark); }
+    .ha-a.yes { color: #16a34a; }
+    .ha-a.no { color: #dc2626; }
+    .ha-a.unknown { color: var(--text-dim); font-weight: 400; font-style: italic; }
+
+    details.transcript-toggle summary {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+    }
+
+    details.transcript-toggle summary::before { content: '▶ '; font-size: 0.65rem; }
+    details.transcript-toggle[open] summary::before { content: '▼ '; }
+
+    details.transcript-toggle .transcript-lines {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        </div>
+        <span class="brand-text">SUNRISE <span>INTERIORS</span></span>
+      </a>
+
+      <a href="/" class="btn-back">
+        ← Back to Main Showcase
+      </a>
+    </div>
+  </header>
+
+  <main class="wrapper">
+    
+    <div class="page-title-sec">
+      <div class="ai-badge">
+        <span class="pulse-dot"></span>
+        AI Voice Agent Portal
+      </div>
+      <h1>Instant Callback Hub</h1>
+      <p>Enter your contact number below to trigger an immediate phone call with Aanya, our AI interior consultant.</p>
+    </div>
+
+    <div class="portal-grid">
+      
+      <!-- Call Form & Live Visualizer -->
+      <div class="white-card">
+        <div class="card-header">
+          <h2>📞 Trigger Immediate Call</h2>
+          <p>Aanya speaks English, Hindi & Hinglish.</p>
+        </div>
+
+        <form id="call-form" novalidate>
+          <div class="form-group">
+            <label for="name">Your Name <span class="opt">(optional)</span></label>
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Rahul Sharma" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📱</span>
+              <input type="tel" id="phone" name="phone_number" class="form-control" placeholder="10-digit mobile number" autocomplete="tel" required />
+            </div>
+          </div>
+
+          <button type="submit" id="call-btn" class="btn-submit">
+            <span>Call Me Now</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <div id="status" role="alert" aria-live="polite"></div>
+
+        <div id="transcript-panel" aria-live="polite">
+          <div class="panel-title">Live Transcript</div>
+          <div class="transcript-meta" id="transcript-meta"></div>
+          <div id="transcript-body" class="utterance-container"></div>
+        </div>
+
+        <div id="lead-summary" aria-live="polite">
+          <div class="panel-title">Lead Qualification Summary</div>
+          <p id="lead-analyzing">⚡ Running AI analysis on your call details…</p>
+          <div id="lead-grid" class="lead-grid" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- Call History Panel -->
+      <div class="white-card">
+        <div id="history-panel">
+          <h2>📋 Call Records & History</h2>
+          <p id="history-empty" style="display:none">No previous calls recorded yet.</p>
+          <div id="history-list"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const form            = document.getElementById('call-form');
+    const btn             = document.getElementById('call-btn');
+    const statusEl        = document.getElementById('status');
+    const transcriptPanel = document.getElementById('transcript-panel');
+    const transcriptBody  = document.getElementById('transcript-body');
+    const transcriptMeta  = document.getElementById('transcript-meta');
+    const leadSummary     = document.getElementById('lead-summary');
+    const leadAnalyzing   = document.getElementById('lead-analyzing');
+    const leadGrid        = document.getElementById('lead-grid');
+    const historyList     = document.getElementById('history-list');
+    const historyEmpty    = document.getElementById('history-empty');
+
+    const LEAD_LABELS = [
+      'Work required',
+      'Start timeline',
+      'Agreed to meeting?',
+      'Time preference',
+    ];
+
+    const MAX_POLLS = 36;
+    const POLL_MS   = 5000;
+
+    function setStatus(type, message) {
+      statusEl.className = type;
+      if (type === 'calling') {
+        statusEl.innerHTML = `
+          <div class="wave-box">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+          <span>${message}</span>
+        `;
+      } else {
+        statusEl.textContent = message;
+      }
+    }
+
+    function startPolling(callId) {
+      let tries = 0;
+
+      const interval = setInterval(async () => {
+        tries++;
+
+        try {
+          const res  = await fetch(`/api/call/${callId}`);
+          const data = await res.json();
+
+          if (!res.ok) {
+            clearInterval(interval);
+            setStatus('error', '❌ Could not fetch call status.');
+            btn.disabled  = false;
+            btn.innerHTML = '<span>Call Me Now</span>';
+            return;
+          }
+
+          const callStatus  = (data.status || '').toLowerCase();
+          const queueStatus = ((data.raw || {}).queue_status || '').toLowerCase();
+          const isDone      = callStatus === 'completed' || queueStatus === 'complete';
+
+          if (isDone) {
+            clearInterval(interval);
+            btn.disabled  = false;
+            btn.innerHTML = '<span>Call Me Now</span>';
+            setStatus('success', '✅ Call completed successfully!');
+            renderTranscript(data, callId);
+            return;
+          }
+
+          const elapsed = tries * (POLL_MS / 1000);
+          setStatus('calling', `Call in progress… (${elapsed}s elapsed, status: ${callStatus || 'queued'})`);
+
+        } catch (err) {}
+
+        if (tries >= MAX_POLLS) {
+          clearInterval(interval);
+          btn.disabled  = false;
+          btn.innerHTML = '<span>Call Me Now</span>';
+          setStatus('success', '✅ Call started — transcript will appear once finished.');
+        }
+      }, POLL_MS);
+    }
+
+    function renderTranscript(data, callId) {
+      const transcript = data.transcript || [];
+      const length     = data.call_length;
+
+      transcriptMeta.textContent = length != null
+        ? `⏱ Call Duration: ${Math.round(length)} seconds`
+        : '';
+
+      transcriptBody.innerHTML = '';
+
+      if (!transcript.length) {
+        transcriptBody.innerHTML = '<p style="font-size:0.85rem;color:var(--text-dim)">No transcript available.</p>';
+      } else if (typeof transcript === 'string') {
+        const p = document.createElement('p');
+        p.style.fontSize = '0.88rem';
+        p.textContent = transcript;
+        transcriptBody.appendChild(p);
+      } else {
+        transcript.forEach(({ speaker, text }) => {
+          const speakerLower = (speaker || '').toLowerCase();
+          const roleClass    = speakerLower === 'assistant' || speakerLower === 'agent'
+            ? 'agent' : 'user';
+
+          const label = roleClass === 'agent' ? 'Aanya (AI)' : 'You';
+
+          const div = document.createElement('div');
+          div.className = `utterance ${roleClass}`;
+          div.innerHTML = `
+            <span class="speaker-tag">${label}</span>
+            <div class="text-bubble">${text}</div>
+          `;
+          transcriptBody.appendChild(div);
+        });
+      }
+
+      transcriptPanel.style.display = 'block';
+      analyzeCall(callId);
+    }
+
+    async function analyzeCall(callId) {
+      if (!callId) return;
+
+      leadSummary.style.display   = 'block';
+      leadAnalyzing.style.display = 'block';
+      leadGrid.style.display      = 'none';
+      leadGrid.innerHTML          = '';
+
+      try {
+        const res  = await fetch(`/api/call/${callId}/analyze`, { method: 'POST' });
+        const data = await res.json();
+
+        leadAnalyzing.style.display = 'none';
+        const answers = data.answers || [];
+
+        if (!answers.length) {
+          leadAnalyzing.style.display = 'block';
+          leadAnalyzing.textContent   = 'No analysis data available.';
+          return;
+        }
+
+        LEAD_LABELS.forEach((label, i) => {
+          const raw = answers[i];
+          const item = document.createElement('div');
+          item.className = 'lead-item';
+
+          let displayVal, valClass = '';
+          if (raw === null || raw === undefined || raw === '') {
+            displayVal = 'Not mentioned'; valClass = 'unknown';
+          } else if (typeof raw === 'boolean') {
+            displayVal = raw ? 'Yes ✓' : 'No ✗'; valClass = raw ? 'yes' : 'no';
+          } else {
+            displayVal = String(raw);
+          }
+
+          item.innerHTML = `
+            <div class="lead-q">${label}</div>
+            <div class="lead-a ${valClass}">${displayVal}</div>
+          `;
+          leadGrid.appendChild(item);
+        });
+
+        leadGrid.style.display = 'grid';
+      } catch (err) {
+        leadAnalyzing.textContent = 'Could not load lead summary.';
+      }
+
+      fetchHistory();
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      transcriptPanel.style.display = 'none';
+      transcriptBody.innerHTML      = '';
+      leadSummary.style.display     = 'none';
+      leadGrid.innerHTML            = '';
+
+      const name  = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!phone) {
+        setStatus('error', 'Please enter your phone number.');
+        return;
+      }
+
+      btn.disabled  = true;
+      btn.innerHTML = '<span>Initiating Call…</span>';
+      setStatus('calling', 'Initiating connection to your phone…');
+
+      try {
+        const res  = await fetch('/api/call', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ name, phone_number: phone }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          const callId = data.call_id;
+          setStatus('calling', 'Call placed! Ringing your phone now…');
+          form.reset();
+
+          if (callId) {
+            startPolling(callId);
+          } else {
+            btn.disabled  = false;
+            btn.innerHTML = '<span>Call Me Now</span>';
+            setStatus('success', '✅ ' + (data.message || "You'll receive a call shortly!"));
+          }
+        } else {
+          setStatus('error', '❌ ' + (data.error || 'Something went wrong. Please try again.'));
+          btn.disabled  = false;
+          btn.innerHTML = '<span>Call Me Now</span>';
+        }
+      } catch (err) {
+        setStatus('error', '❌ Network error — please try again.');
+        btn.disabled  = false;
+        btn.innerHTML = '<span>Call Me Now</span>';
+      }
+    });
+
+    async function fetchHistory() {
+      try {
+        const refreshRes  = await fetch('/api/history/refresh', { method: 'POST' });
+        const refreshData = await refreshRes.json();
+        renderHistory(refreshData.records || []);
+      } catch (err) {
+        try {
+          const res     = await fetch('/api/history');
+          const records = await res.json();
+          renderHistory(records);
+        } catch (_) {}
+      }
+    }
+
+    function fmtTime(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      return d.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function renderHistory(records) {
+      historyList.innerHTML = '';
+
+      if (!records || !records.length) {
+        historyEmpty.style.display = 'block';
+        return;
+      }
+
+      historyEmpty.style.display = 'none';
+
+      records.forEach(r => {
+        const status     = (r.status || 'initiated').toLowerCase();
+        const badgeClass = status === 'completed' ? 'completed' : status === 'initiated' ? 'initiated' : 'other';
+        const analysis   = r.analysis || {};
+        const transcript = r.transcript || [];
+
+        const analysisKeys = Object.keys(analysis);
+        let analysisHTML = '';
+        if (analysisKeys.length) {
+          analysisHTML = `<div class="history-analysis">${
+            analysisKeys.map(k => {
+              const val = analysis[k];
+              let display, cls = '';
+              if (val === null || val === undefined || val === '') {
+                display = 'Not mentioned'; cls = 'unknown';
+              } else if (typeof val === 'boolean') {
+                display = val ? 'Yes ✓' : 'No ✗'; cls = val ? 'yes' : 'no';
+              } else {
+                display = String(val);
+              }
+              return `<div class="ha-item"><div class="ha-q">${k}</div><div class="ha-a ${cls}">${display}</div></div>`;
+            }).join('')
+          }</div>`;
+        }
+
+        let transcriptHTML = '';
+        if (transcript.length) {
+          const lines = transcript.map(u => {
+            const sl = (u.speaker || '').toLowerCase();
+            const role = sl === 'assistant' || sl === 'agent' ? 'agent' : 'user';
+            const label = role === 'agent' ? 'Aanya (AI)' : 'You';
+            return `
+              <div class="utterance ${role}">
+                <span class="speaker-tag">${label}</span>
+                <div class="text-bubble">${u.text}</div>
+              </div>
+            `;
+          }).join('');
+
+          transcriptHTML = `
+            <details class="transcript-toggle">
+              <summary>View transcript (${transcript.length} turns)</summary>
+              <div class="transcript-lines">${lines}</div>
+            </details>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+          <div class="history-card-header">
+            <div>
+              <div class="history-name">${r.name || 'Anonymous'}</div>
+              <div class="history-phone">${r.phone || '—'}</div>
+            </div>
+            <div class="history-time">${fmtTime(r.initiated_at)}</div>
+          </div>
+          <span class="status-badge ${badgeClass}">${status}</span>
+          ${r.call_length != null ? `<div class="history-duration">⏱ ${Math.round(r.call_length)}s duration</div>` : ''}
+          ${analysisHTML}
+          ${transcriptHTML}
+        `;
+        historyList.appendChild(card);
+      });
+    }
+
+    fetchHistory();
+  </script>
+</body>
+</html>

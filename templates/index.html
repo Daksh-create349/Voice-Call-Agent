@@ -3,779 +3,973 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Get a free call from our interior design consultants." />
-  <title>Designing your new flat?</title>
+  <meta name="description" content="Sunrise Interiors - Premier Luxury Flat & Villa Interior Architecture in India with Instant AI Consultation." />
+  <title>Sunrise Interiors — Luxury Architecture & Modern Interiors</title>
+  
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <style>
     :root {
-      --accent: #f97316;
-      --accent-dark: #ea6a00;
-      --bg: #f5f5f4;
-      --card: #ffffff;
-      --text: #1c1917;
-      --muted: #78716c;
-      --border: #e7e5e4;
-      --radius: 12px;
+      --bg-light: #faf8f5;
+      --bg-white: #ffffff;
+      --bg-subtle: #f3eee7;
+      --border: #e8ded3;
+      --border-accent: #f97316;
+      --accent: #ea580c;
+      --accent-gradient: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+      --gold-gradient: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      --text-dark: #181512;
+      --text-muted: #665e55;
+      --text-dim: #998f84;
+      --radius-xl: 32px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow-soft: 0 10px 40px rgba(180, 83, 9, 0.06);
+      --shadow-hover: 0 20px 50px rgba(234, 88, 12, 0.12);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-light);
+      background-image: 
+        radial-gradient(circle at 12% 12%, rgba(249, 115, 22, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 88% 75%, rgba(217, 119, 6, 0.04) 0%, transparent 45%);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 248, 245, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.1rem 1.5rem;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 2rem 1.5rem 4rem;
-      gap: 2rem;
-    }
-
-    .page-wrap {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      gap: 2rem;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2.5rem 2rem;
-      width: 100%;
-      max-width: 420px;
-      flex-shrink: 0;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-    }
-
-    .card h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p.subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-bottom: 1.1rem;
-    }
-
-    label {
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    label .optional {
-      font-weight: 400;
-      color: var(--muted);
-      margin-left: 0.25rem;
-    }
-
-    input {
-      padding: 0.65rem 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      color: var(--text);
-      background: #fafaf9;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
-    }
-
-    input::placeholder { color: #a8a29e; }
-
-    button#call-btn {
-      margin-top: 0.5rem;
-      width: 100%;
-      padding: 0.75rem;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.2s, opacity 0.2s;
-    }
-
-    button#call-btn:hover:not(:disabled) { background: var(--accent-dark); }
-    button#call-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    #status {
-      margin-top: 1.1rem;
-      font-size: 0.875rem;
-      border-radius: 8px;
-      padding: 0.65rem 0.9rem;
-      display: none;
-      line-height: 1.5;
-    }
-
-    #status.calling {
-      display: block;
-      background: #fff7ed;
-      color: #c2410c;
-      border: 1px solid #fed7aa;
-    }
-
-    #status.success {
-      display: block;
-      background: #f0fdf4;
-      color: #15803d;
-      border: 1px solid #bbf7d0;
-    }
-
-    #status.error {
-      display: block;
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1px solid #fecaca;
-    }
-
-    /* Transcript panel */
-    #transcript-panel {
-      display: none;
-      margin-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      padding-top: 1.25rem;
-    }
-
-    #transcript-panel h2 {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin-bottom: 0.85rem;
-    }
-
-    .transcript-meta {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.85rem;
-    }
-
-    .utterance {
-      display: flex;
-      gap: 0.6rem;
-      margin-bottom: 0.65rem;
-      align-items: flex-start;
-    }
-
-    .utterance .speaker {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.2rem 0.45rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-
-    .utterance.agent .speaker  { background: #fff7ed; color: var(--accent-dark); }
-    .utterance.user  .speaker  { background: #f0f9ff; color: #0369a1; }
-    .utterance.unknown .speaker{ background: #f4f4f5; color: #52525b; }
-
-    .utterance .text {
-      font-size: 0.875rem;
-      line-height: 1.6;
-      color: var(--text);
-    }
-
-    /* Lead summary card */
-    #lead-summary {
-      display: none;
-      margin-top: 1.25rem;
-      border-top: 1px solid var(--border);
-      padding-top: 1.25rem;
-    }
-
-    #lead-summary h2 {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin-bottom: 0.85rem;
-    }
-
-    .lead-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
-    }
-
-    .lead-item {
-      background: #fafaf9;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.65rem 0.8rem;
-    }
-
-    .lead-item .lead-q {
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.3rem;
-    }
-
-    .lead-item .lead-a {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.4;
-    }
-
-    .lead-item .lead-a.yes  { color: #15803d; }
-    .lead-item .lead-a.no   { color: #b91c1c; }
-    .lead-item .lead-a.unknown { color: var(--muted); font-weight: 400; font-style: italic; }
-
-    #lead-analyzing {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    /* ── History panel ──────────────────────────────────────────────── */
-    #history-panel {
-      flex: 1;
-      min-width: 300px;
-    }
-
-    #history-panel h2 {
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    #history-empty {
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .history-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem 1.1rem;
-      margin-bottom: 0.75rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: border-color 0.2s;
-    }
-
-    .history-card:hover { border-color: rgba(249,115,22,0.35); }
-
-    .history-card-header {
-      display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.5rem;
-      margin-bottom: 0.55rem;
     }
 
-    .history-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text);
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
     }
 
-    .history-phone {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.1rem;
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.3);
     }
 
-    .history-time {
-      font-size: 0.72rem;
-      color: var(--muted);
-      white-space: nowrap;
+    .logo-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #ffffff;
     }
 
-    .status-badge {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      margin-bottom: 0.5rem;
+    .brand-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
     }
 
-    .status-badge.completed { background: #dcfce7; color: #15803d; }
-    .status-badge.initiated  { background: #fff7ed; color: #c2410c; }
-    .status-badge.other      { background: #f4f4f5; color: #52525b; }
-
-    .history-duration {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 0.55rem;
+    .brand-text span {
+      color: var(--accent);
     }
 
-    .history-analysis {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.4rem;
-      margin-bottom: 0.55rem;
-    }
-
-    .ha-item {
-      background: #fafaf9;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.4rem 0.6rem;
-    }
-
-    .ha-q { font-size: 0.65rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.15rem; }
-    .ha-a { font-size: 0.8rem;  font-weight: 600; color: var(--text); }
-    .ha-a.yes     { color: #15803d; }
-    .ha-a.no      { color: #b91c1c; }
-    .ha-a.unknown { color: var(--muted); font-weight: 400; font-style: italic; }
-
-    details.transcript-toggle {
-      margin-top: 0.5rem;
-    }
-
-    details.transcript-toggle summary {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--accent-dark);
-      cursor: pointer;
-      user-select: none;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
       list-style: none;
     }
 
-    details.transcript-toggle summary::before {
-      content: '▶ ';
-      font-size: 0.6rem;
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: color 0.2s;
     }
 
-    details.transcript-toggle[open] summary::before {
-      content: '▼ ';
+    .nav-links a:hover {
+      color: var(--accent);
     }
 
-    details.transcript-toggle .transcript-lines {
-      margin-top: 0.6rem;
+    .btn-nav-call {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      padding: 0.7rem 1.4rem;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(234, 88, 12, 0.25);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-nav-call:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(234, 88, 12, 0.4);
+    }
+
+    /* ── Main Container ── */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3.5rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+
+    @media (max-width: 992px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 0.45rem 1.2rem;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span.highlight {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p.subhead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 2.25rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      padding: 1.05rem 2rem;
+      border-radius: 99px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(234, 88, 12, 0.35);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(234, 88, 12, 0.5);
+    }
+
+    .btn-hero-secondary {
+      background: #ffffff;
+      color: var(--text-dark);
+      border: 1.5px solid var(--border);
+      padding: 1.05rem 1.8rem;
+      border-radius: 99px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-hero-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Hero Visual Card */
+    .hero-visual-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-hover);
+      position: relative;
+    }
+
+    .visual-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .visual-header-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .visual-tag {
+      background: #fff7ed;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+    }
+
+    .hero-features-list {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 1rem;
+    }
+
+    .feature-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg-light);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .feature-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: var(--shadow-soft);
+      flex-shrink: 0;
+    }
+
+    .feature-info h4 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .feature-info p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Stats Banner ── */
+    .stats-banner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 6rem;
+    }
+
+    .stat-box {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-lbl {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* ── Interactive Style Selector ── */
+    .section-title {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 3rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+
+    .style-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .tab-btn {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      padding: 0.65rem 1.4rem;
+      border-radius: 99px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-gradient);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.3);
+    }
+
+    .style-display-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      box-shadow: var(--shadow-hover);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+
+    @media (max-width: 850px) {
+      .style-display-card {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+      }
+    }
+
+    .style-meta h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .style-meta p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .color-swatches {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .style-tags-list {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .style-tag {
+      background: var(--bg-subtle);
+      color: var(--text-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+    }
+
+    .style-preview-box {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .style-preview-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .style-preview-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* ── 30-Second Estimator ── */
+    .estimator-section {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3.5rem 2.5rem;
+      box-shadow: var(--shadow-hover);
+      margin-bottom: 6rem;
+    }
+
+    .estimator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 850px) {
+      .estimator-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .est-option-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .est-option-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.6rem;
+    }
+
+    .est-buttons {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .est-btn {
+      background: var(--bg-light);
+      border: 1.5px solid var(--border);
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .est-btn.selected {
+      background: #fff7ed;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .estimate-result-box {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .est-price-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .est-price-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .est-subtext {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Spotlight AI Voice Consultation Section ── */
+    .ai-spotlight-card {
+      background: linear-gradient(135deg, #181512 0%, #2a241f 100%);
+      color: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 4rem 3rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+
+    @media (max-width: 900px) {
+      .ai-spotlight-card {
+        grid-template-columns: 1fr;
+        padding: 2.5rem 1.75rem;
+      }
+    }
+
+    .spotlight-info h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .spotlight-info p {
+      font-size: 1.1rem;
+      color: #d1c7bc;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .spotlight-box {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .speech-sample {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-style: italic;
+      color: #fed7aa;
+      margin-bottom: 1.25rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .btn-spotlight {
+      width: 100%;
+      background: var(--accent-gradient);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-spotlight:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(234, 88, 12, 0.6);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      background: #ffffff;
+    }
+
+    footer span.brand {
+      color: var(--text-dark);
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
 
-  <div class="page-wrap">
-  <div class="card">
-    <h1>Designing your new flat?</h1>
-    <p class="subtitle">Leave your number and we'll call you in seconds with tailored advice — no waiting, no hold music.</p>
+  <!-- ── Header ── -->
+  <header>
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        </div>
+        <span class="brand-text">SUNRISE <span>INTERIORS</span></span>
+      </a>
 
-    <form id="call-form" novalidate>
-      <div class="field">
-        <label for="name">Your name <span class="optional">(optional)</span></label>
-        <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" />
+      <ul class="nav-links">
+        <li><a href="#design-styles">Design Styles</a></li>
+        <li><a href="#estimator">Budget Estimator</a></li>
+        <li><a href="#ai-spotlight">Meet Aanya (AI)</a></li>
+        <li><a href="/call">Call History</a></li>
+      </ul>
+
+      <a href="/call" class="btn-nav-call">
+        <span>⚡ Launch AI Call</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ── Hero Section ── -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          ✦ India's Premier Luxury Architecture & Interiors
+        </div>
+        
+        <h1>Transform Your Flat into an <span class="highlight">Architectural Masterpiece.</span></h1>
+        
+        <p class="subhead">
+          Bespoke 3D interior design, premium European fittings, and instant AI voice consultation. Connect with our team in seconds without waiting on hold.
+        </p>
+
+        <div class="hero-actions">
+          <a href="/call" class="btn-hero-primary">
+            <span>📞 Talk to AI Consultant Now</span>
+          </a>
+          <a href="#estimator" class="btn-hero-secondary">
+            <span>🎨 Calculate 30-Sec Estimate</span>
+          </a>
+        </div>
       </div>
 
-      <div class="field">
-        <label for="phone">Phone number</label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone_number"
-          placeholder="+1 555 000 0000"
-          autocomplete="tel"
-          required
-        />
+      <!-- Hero Visual Card -->
+      <div class="hero-visual-card">
+        <div class="visual-header">
+          <span class="visual-header-title">Sunrise Interiors Craftsmanship</span>
+          <span class="visual-tag">100% Personalised</span>
+        </div>
+
+        <div class="hero-features-list">
+          <div class="feature-row">
+            <div class="feature-icon-box">🏡</div>
+            <div class="feature-info">
+              <h4>Full Home Execution</h4>
+              <p>Turnkey interior solutions for 2BHK, 3BHK & Luxury Duplexes.</p>
+            </div>
+          </div>
+
+          <div class="feature-row">
+            <div class="feature-icon-box">✨</div>
+            <div class="feature-info">
+              <h4>45-Day Move-in Guarantee</h4>
+              <p>On-time delivery backed by penalty clause protection.</p>
+            </div>
+          </div>
+
+          <div class="feature-row">
+            <div class="feature-icon-box">⚡</div>
+            <div class="feature-info">
+              <h4>Instant AI Call Connection</h4>
+              <p>Request an immediate callback in Hindi, English or Hinglish.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Stats Banner ── -->
+    <section class="stats-banner">
+      <div class="stat-box">
+        <div class="stat-num">500+</div>
+        <div class="stat-lbl">Flats & Villas Designed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">10-Year</div>
+        <div class="stat-lbl">Material Warranty</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">&lt; 10s</div>
+        <div class="stat-lbl">AI Call Response Time</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-lbl">Client Review Score</div>
+      </div>
+    </section>
+
+    <!-- ── Interactive Style Selector ── -->
+    <section id="design-styles">
+      <div class="section-title">
+        <h2>Explore Signature Design Themes</h2>
+        <p>Select your aesthetic preference to view tailored color palettes and material combinations.</p>
       </div>
 
-      <button type="submit" id="call-btn">Call me now</button>
-    </form>
+      <div class="style-tabs">
+        <button class="tab-btn active" onclick="selectStyle('japandi', this)">Modern Japandi</button>
+        <button class="tab-btn" onclick="selectStyle('indian-luxe', this)">Contemporary Indian Luxury</button>
+        <button class="tab-btn" onclick="selectStyle('scandi', this)">Warm Scandinavian</button>
+        <button class="tab-btn" onclick="selectStyle('neoclassic', this)">Neoclassical Opulence</button>
+      </div>
 
-    <div id="status" role="alert" aria-live="polite"></div>
+      <div class="style-display-card" id="style-card">
+        <!-- Dynamic content via JS -->
+      </div>
+    </section>
 
-    <div id="transcript-panel" aria-live="polite">
-      <h2>Call transcript</h2>
-      <p class="transcript-meta" id="transcript-meta"></p>
-      <div id="transcript-body"></div>
-    </div>
+    <!-- ── 30-Second Budget Estimator ── -->
+    <section id="estimator" class="estimator-section">
+      <div class="section-title">
+        <h2>30-Second Flat Budget Estimator</h2>
+        <p>Select your flat configuration and scope to calculate a quick ballpark cost estimate.</p>
+      </div>
 
-    <div id="lead-summary" aria-live="polite">
-      <h2>Lead summary</h2>
-      <p id="lead-analyzing">Analysing call…</p>
-      <div id="lead-grid" class="lead-grid" style="display:none"></div>
-    </div>
-  </div><!-- /.card -->
+      <div class="estimator-grid">
+        <div class="estimator-controls">
+          <div class="est-option-group">
+            <label>1. Flat Layout</label>
+            <div class="est-buttons" id="layout-btns">
+              <button class="est-btn" onclick="setEstimate('layout', '2bhk', 450000, this)">2 BHK</button>
+              <button class="est-btn selected" onclick="setEstimate('layout', '3bhk', 750000, this)">3 BHK</button>
+              <button class="est-btn" onclick="setEstimate('layout', '4bhk', 1100000, this)">4 BHK / Villa</button>
+            </div>
+          </div>
 
-  <div id="history-panel">
-    <h2>Call history</h2>
-    <p id="history-empty" style="display:none">No calls yet.</p>
-    <div id="history-list"></div>
-  </div>
+          <div class="est-option-group">
+            <label>2. Finish Quality</label>
+            <div class="est-buttons" id="finish-btns">
+              <button class="est-btn selected" onclick="setEstimate('finish', 'premium', 1.0, this)">Premium Classic</button>
+              <button class="est-btn" onclick="setEstimate('finish', 'elite', 1.35, this)">Luxury Elite</button>
+              <button class="est-btn" onclick="setEstimate('finish', 'ultraluxe', 1.75, this)">Ultra-Luxe Bespoke</button>
+            </div>
+          </div>
+        </div>
 
-  </div><!-- /.page-wrap -->
+
+        <div class="estimate-result-box">
+          <div class="est-price-title">Estimated Investment</div>
+          <div class="est-price-val" id="estimate-price">₹7.50 Lakhs</div>
+          <p class="est-subtext">Includes 3D design, modular furniture, electricals & turnkey execution.</p>
+          <a href="/call" class="btn-hero-primary" style="justify-content: center; width: 100%;">
+            <span>Schedule Designer Call →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Spotlight AI Voice Section ── -->
+    <section id="ai-spotlight" class="ai-spotlight-card">
+      <div class="spotlight-info">
+        <h2>Meet Aanya — Your AI Interior Assistant 🤖</h2>
+        <p>No forms gathering dust in an inbox. The moment you enter your phone number on our call portal, Aanya places a real phone call to discuss your timeline, preferences, and designer availability.</p>
+        <a href="/call" class="btn-hero-primary" style="display: inline-flex;">
+          <span>Trigger Live Call with Aanya Now →</span>
+        </a>
+      </div>
+
+      <div class="spotlight-box">
+        <div class="speech-sample">
+          "Namaste! Main Sunrise Interiors se Aanya bol rahi hoon. Aapne hamari website par interior enquiry submit ki thi — kya aapse 2 minute baat ho sakti hai?"
+        </div>
+        <a href="/call" class="btn-spotlight">
+          <span>📞 Open AI Voice Calling Portal</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 <span class="brand">Sunrise Interiors</span>. All Rights Reserved. Powered by Bland AI Telephony Platform.</p>
+  </footer>
 
   <script>
-    const form              = document.getElementById('call-form');
-    const btn               = document.getElementById('call-btn');
-    const statusEl          = document.getElementById('status');
-    const transcriptPanel   = document.getElementById('transcript-panel');
-    const transcriptBody    = document.getElementById('transcript-body');
-    const transcriptMeta    = document.getElementById('transcript-meta');
-    const leadSummary       = document.getElementById('lead-summary');
-    const leadAnalyzing     = document.getElementById('lead-analyzing');
-    const leadGrid          = document.getElementById('lead-grid');
-    const historyList       = document.getElementById('history-list');
-    const historyEmpty      = document.getElementById('history-empty');
+    // Style Explorer Data
+    const STYLES = {
+      'japandi': {
+        title: 'Modern Japandi',
+        desc: 'A harmonized blend of Japanese minimalism and Scandinavian functionality. Clean wooden lines, organic textures, and soothing muted tones.',
+        colors: ['#e2d5c3', '#a89f91', '#5c5247', '#2e2823'],
+        tags: ['Light Oak Wood', 'Textured Linen', 'Wabi-Sabi Ceramics', 'Slotted Panels'],
+        icon: '🪨'
+      },
+      'indian-luxe': {
+        title: 'Contemporary Indian Luxury',
+        desc: 'Rich brass accents, warm teak wood, woven cane, and subtle terracotta tones paired with ultra-modern minimalist layouts.',
+        colors: ['#ea580c', '#d97706', '#78350f', '#1f1915'],
+        tags: ['Brushed Brass', 'Burnt Terracotta', 'Handcrafted Cane', 'Teak Veneer'],
+        icon: '🕌'
+      },
+      'scandi': {
+        title: 'Warm Scandinavian',
+        desc: 'Bright ivory spaces infused with soft pastel fabrics, light ash wood, and hygge lighting for a cozy family sanctuary.',
+        colors: ['#ffffff', '#f3eee7', '#cbd5e1', '#0f172a'],
+        tags: ['Ash Wood', 'Bouclé Fabrics', 'Recessed Warm LED', 'Matte Ceramics'],
+        icon: '🌿'
+      },
+      'neoclassic': {
+        title: 'Neoclassical Opulence',
+        desc: 'Intricate wall moldings, Italian marble flooring, crystal chandeliers, and rich velvet upholsteries for grand aesthetic living.',
+        colors: ['#f8fafc', '#94a3b8', '#334155', '#020617'],
+        tags: ['Italian Marble', 'Wainscoting Moldings', 'Polished Gold', 'Velvet Pillows'],
+        icon: '🏛️'
+      }
+    };
 
-    // Short labels for each question (same order as ANALYZE_QUESTIONS in app.py)
-    const LEAD_LABELS = [
-      'Work required',
-      'Start timeline',
-      'Agreed to meeting?',
-      'Time preference',
-    ];
-
-    const MAX_POLLS   = 36;   // 36 × 5s = 3 minutes
-    const POLL_MS     = 5000;
-
-    function setStatus(type, message) {
-      statusEl.className   = type;
-      statusEl.textContent = message;
-    }
-
-    // ── Polling ────────────────────────────────────────────────────────────
-    function startPolling(callId) {
-      let tries = 0;
-
-      const interval = setInterval(async () => {
-        tries++;
-
-        try {
-          const res  = await fetch(`/api/call/${callId}`);
-          const data = await res.json();
-
-          if (!res.ok) {
-            clearInterval(interval);
-            setStatus('error', '❌ Could not fetch call status.');
-            btn.disabled    = false;
-            btn.textContent = 'Call me now';
-            return;
-          }
-
-          const callStatus  = (data.status || '').toLowerCase();
-          const queueStatus = ((data.raw || {}).queue_status || '').toLowerCase();
-          const isDone      = callStatus === 'completed' || queueStatus === 'complete';
-
-          if (isDone) {
-            clearInterval(interval);
-            btn.disabled    = false;
-            btn.textContent = 'Call me now';
-            setStatus('success', '✅ Call completed!');
-            renderTranscript(data, callId);
-            return;
-          }
-
-          // Update status label while waiting
-          const elapsed = tries * (POLL_MS / 1000);
-          setStatus('calling', `📞 Call in progress… (${elapsed}s elapsed, status: ${callStatus || 'queued'})`);
-
-        } catch (err) {
-          // Network blip — keep trying until max polls
-        }
-
-        if (tries >= MAX_POLLS) {
-          clearInterval(interval);
-          btn.disabled    = false;
-          btn.textContent = 'Call me now';
-          setStatus('success', '✅ Call started — transcript will appear once the call ends. Refresh to check again.');
-        }
-      }, POLL_MS);
-    }
-
-    // ── Transcript renderer ────────────────────────────────────────────────
-    function renderTranscript(data, callId) {
-      const transcript = data.transcript || [];
-      const length     = data.call_length;
-
-      transcriptMeta.textContent = length != null
-        ? `Call duration: ${Math.round(length)} seconds`
-        : '';
-
-      transcriptBody.innerHTML = '';
-
-      if (!transcript.length) {
-        transcriptBody.innerHTML = '<p style="font-size:0.85rem;color:var(--muted)">No transcript available.</p>';
-      } else if (typeof transcript === 'string') {
-        // Plain-string fallback
-        const p = document.createElement('p');
-        p.style.fontSize  = '0.875rem';
-        p.style.lineHeight = '1.6';
-        p.textContent = transcript;
-        transcriptBody.appendChild(p);
+    function selectStyle(key, btnEl) {
+      document.querySelectorAll('.style-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+      if (btnEl) {
+        btnEl.classList.add('active');
       } else {
-        transcript.forEach(({ speaker, text }) => {
-          const speakerLower = (speaker || '').toLowerCase();
-          const roleClass    = speakerLower === 'assistant' || speakerLower === 'agent'
-            ? 'agent'
-            : speakerLower === 'user'
-            ? 'user'
-            : 'unknown';
-
-          const label = roleClass === 'agent' ? 'Aanya' : roleClass === 'user' ? 'You' : speaker;
-
-          const div = document.createElement('div');
-          div.className = `utterance ${roleClass}`;
-          div.innerHTML = `<span class="speaker">${label}</span><span class="text">${text}</span>`;
-          transcriptBody.appendChild(div);
-        });
+        const defaultBtn = document.querySelector(`.style-tabs .tab-btn[onclick*="${key}"]`);
+        if (defaultBtn) defaultBtn.classList.add('active');
       }
 
-      transcriptPanel.style.display = 'block';
-
-      // Kick off analysis after transcript renders
-      analyzeCall(callId);
-    }
-
-    // ── Lead summary ───────────────────────────────────────────────────────
-    async function analyzeCall(callId) {
-      if (!callId) return;
-
-      leadSummary.style.display = 'block';
-      leadAnalyzing.style.display = 'block';
-      leadGrid.style.display      = 'none';
-      leadGrid.innerHTML          = '';
-
-      try {
-        const res  = await fetch(`/api/call/${callId}/analyze`, { method: 'POST' });
-        const data = await res.json();
-
-        leadAnalyzing.style.display = 'none';
-
-        // Bland returns answers under `answers` array (same order as questions)
-        const answers = data.answers || [];
-
-        if (!answers.length) {
-          leadAnalyzing.style.display = 'block';
-          leadAnalyzing.textContent   = 'No analysis data available.';
-          return;
-        }
-
-        LEAD_LABELS.forEach((label, i) => {
-          const raw = answers[i];
-          const item = document.createElement('div');
-          item.className = 'lead-item';
-
-          let displayVal, valClass = '';
-          if (raw === null || raw === undefined || raw === '') {
-            displayVal = 'Not mentioned';
-            valClass   = 'unknown';
-          } else if (typeof raw === 'boolean') {
-            displayVal = raw ? 'Yes ✓' : 'No ✗';
-            valClass   = raw ? 'yes' : 'no';
-          } else {
-            displayVal = String(raw);
-          }
-
-          item.innerHTML = `
-            <div class="lead-q">${label}</div>
-            <div class="lead-a ${valClass}">${displayVal}</div>
-          `;
-          leadGrid.appendChild(item);
-        });
-
-        leadGrid.style.display = 'grid';
-
-      } catch (err) {
-        leadAnalyzing.textContent = 'Could not load lead summary.';
-      }
-
-      // Refresh history after analysis is saved
-      fetchHistory();
-    }
-
-    // ── Form submit ────────────────────────────────────────────────────────
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Hide any previous transcript + lead summary
-      transcriptPanel.style.display = 'none';
-      transcriptBody.innerHTML      = '';
-      leadSummary.style.display     = 'none';
-      leadGrid.innerHTML            = '';
-
-      const name  = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-
-      if (!phone) {
-        setStatus('error', 'Please enter your phone number.');
-        return;
-      }
-
-      btn.disabled    = true;
-      btn.textContent = 'Calling…';
-      setStatus('calling', '📞 Calling… this usually takes a few seconds.');
-
-      try {
-        const res  = await fetch('/api/call', {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ name, phone_number: phone }),
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          const callId = data.call_id;
-          setStatus('calling', '📞 Call started! Waiting for it to complete…');
-          form.reset();
-
-          if (callId) {
-            startPolling(callId);
-          } else {
-            // No call_id returned — fall back to simple success
-            btn.disabled    = false;
-            btn.textContent = 'Call me now';
-            setStatus('success', '✅ ' + (data.message || "You'll receive a call shortly!"));
-          }
-        } else {
-          setStatus('error', '❌ ' + (data.error || 'Something went wrong. Please try again.'));
-          btn.disabled    = false;
-          btn.textContent = 'Call me now';
-        }
-      } catch (err) {
-        setStatus('error', '❌ Network error — please check your connection and try again.');
-        btn.disabled    = false;
-        btn.textContent = 'Call me now';
-      }
-    });
-
-    // ── History ────────────────────────────────────────────────────────
-    async function fetchHistory() {
-      try {
-        // First backfill any calls that completed after the poll window
-        const refreshRes = await fetch('/api/history/refresh', { method: 'POST' });
-        const refreshData = await refreshRes.json();
-        renderHistory(refreshData.records || []);
-      } catch (err) {
-        // fallback: just read what's stored
-        try {
-          const res     = await fetch('/api/history');
-          const records = await res.json();
-          renderHistory(records);
-        } catch (_) {}
-      }
-    }
-
-    function fmtTime(iso) {
-      if (!iso) return '';
-      const d = new Date(iso);
-      return d.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
-    }
-
-    function renderHistory(records) {
-      historyList.innerHTML = '';
-
-      if (!records || !records.length) {
-        historyEmpty.style.display = 'block';
-        return;
-      }
-
-      historyEmpty.style.display = 'none';
-
-      records.forEach(r => {
-        const status     = (r.status || 'initiated').toLowerCase();
-        const badgeClass = status === 'completed' ? 'completed' : status === 'initiated' ? 'initiated' : 'other';
-        const analysis   = r.analysis || {};
-        const transcript = r.transcript || [];
-
-        // ── Analysis grid
-        const analysisKeys = Object.keys(analysis);
-        let analysisHTML = '';
-        if (analysisKeys.length) {
-          analysisHTML = `<div class="history-analysis">${
-            analysisKeys.map(k => {
-              const val = analysis[k];
-              let display, cls = '';
-              if (val === null || val === undefined || val === '') {
-                display = 'Not mentioned'; cls = 'unknown';
-              } else if (typeof val === 'boolean') {
-                display = val ? 'Yes ✓' : 'No ✗'; cls = val ? 'yes' : 'no';
-              } else {
-                display = String(val);
-              }
-              return `<div class="ha-item"><div class="ha-q">${k}</div><div class="ha-a ${cls}">${display}</div></div>`;
-            }).join('')
-          }</div>`;
-        }
-
-        // ── Transcript accordion
-        let transcriptHTML = '';
-        if (transcript.length) {
-          const lines = transcript.map(u => {
-            const sl = (u.speaker || '').toLowerCase();
-            const role = sl === 'assistant' || sl === 'agent' ? 'agent'
-                       : sl === 'user' || sl === 'human'     ? 'user' : 'unknown';
-            const label = role === 'agent' ? 'Aanya' : role === 'user' ? 'You' : u.speaker;
-            return `<div class="utterance ${role}"><span class="speaker">${label}</span><span class="text">${u.text}</span></div>`;
-          }).join('');
-          transcriptHTML = `
-            <details class="transcript-toggle">
-              <summary>View transcript (${transcript.length} turns)</summary>
-              <div class="transcript-lines">${lines}</div>
-            </details>`;
-        }
-
-        const card = document.createElement('div');
-        card.className = 'history-card';
-        card.innerHTML = `
-          <div class="history-card-header">
-            <div>
-              <div class="history-name">${r.name || 'Anonymous'}</div>
-              <div class="history-phone">${r.phone || '—'}</div>
-            </div>
-            <div class="history-time">${fmtTime(r.initiated_at)}</div>
+      const s = STYLES[key];
+      if (!s) return;
+      const card = document.getElementById('style-card');
+      card.innerHTML = `
+        <div class="style-meta">
+          <h3>${s.title}</h3>
+          <p>${s.desc}</p>
+          <div class="color-swatches">
+            ${s.colors.map(c => `<div class="swatch" style="background:${c}"></div>`).join('')}
           </div>
-          <span class="status-badge ${badgeClass}">${status}</span>
-          ${r.call_length != null ? `<div class="history-duration">⏱ ${Math.round(r.call_length)}s</div>` : ''}
-          ${analysisHTML}
-          ${transcriptHTML}
-        `;
-        historyList.appendChild(card);
-      });
+          <div class="style-tags-list">
+            ${s.tags.map(t => `<span class="style-tag">${t}</span>`).join('')}
+          </div>
+        </div>
+        <div class="style-preview-box">
+          <div class="style-preview-icon">${s.icon}</div>
+          <div class="style-preview-title">${s.title} Theme</div>
+        </div>
+      `;
     }
 
-    // Load history on page open
-    fetchHistory();
+    // Estimator state
+    let basePrice = 750000;
+    let multiplier = 1.0;
+
+    function setEstimate(type, key, val, btnEl) {
+      if (type === 'layout') {
+        basePrice = val;
+        document.querySelectorAll('#layout-btns .est-btn').forEach(b => b.classList.remove('selected'));
+        if (btnEl) btnEl.classList.add('selected');
+      } else if (type === 'finish') {
+        multiplier = val;
+        document.querySelectorAll('#finish-btns .est-btn').forEach(b => b.classList.remove('selected'));
+        if (btnEl) btnEl.classList.add('selected');
+      }
+
+      const total = basePrice * multiplier;
+      const lakhs = (total / 100000).toFixed(2);
+      document.getElementById('estimate-price').textContent = `₹${lakhs} Lakhs`;
+    }
+
+    // Init default style on load
+    selectStyle('japandi');
   </script>
 
 </body>
