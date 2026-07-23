@@ -30,24 +30,33 @@ BLAND_VOICE        = os.getenv("BLAND_VOICE", "").strip()
 BLAND_API_URL      = "https://api.bland.ai/v1/calls"
 
 PORT               = int(os.getenv("PORT", 5001))
-HISTORY_FILE       = Path("call_history.json")
+# Use /tmp folder on Vercel / serverless environments to prevent read-only filesystem errors
+IS_SERVERLESS = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
+HISTORY_FILE  = Path("/tmp/call_history.json") if IS_SERVERLESS else Path("call_history.json")
 
 
 # ── History helpers ────────────────────────────────────────────────────────────
 
 def load_history() -> list:
-    """Load all call records from disk."""
-    if HISTORY_FILE.exists():
-        try:
-            return json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
-        except Exception:
-            return []
+    """Load all call records from disk or /tmp."""
+    for path in [HISTORY_FILE, Path("/tmp/call_history.json"), Path("call_history.json")]:
+        if path.exists():
+            try:
+                return json.loads(path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
     return []
 
 
 def save_history(records: list) -> None:
-    """Persist call records to disk."""
-    HISTORY_FILE.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
+    """Persist call records safely (with /tmp fallback for read-only serverless filesystems)."""
+    for path in [HISTORY_FILE, Path("/tmp/call_history.json")]:
+        try:
+            path.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
+            return
+        except Exception:
+            continue
+
 
 
 def upsert_record(patch: dict) -> None:
