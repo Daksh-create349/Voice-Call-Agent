@@ -12,7 +12,7 @@ The AI agent places a real cellular phone call to the user within seconds, condu
 - **Multi-Page Routing**:
   - `/` — **Landing Page**: Features a 30-second flat budget estimator, signature design style explorer (*Modern Japandi*, *Contemporary Indian Luxury*, *Warm Scandinavian*, *Neoclassical Opulence*), and brand statistics.
   - `/call` — **AI Voice Portal**: Dedicated portal containing the outbound call trigger form, live audio wave visualizer, real-time transcript speech bubbles, lead qualification summary, and call history logs.
-- **Vapi AI + ElevenLabs Engine**: Powered by ElevenLabs' Indian voice model (*Aditi*) with sub-second response latency.
+- **Vapi AI + ElevenLabs Engine**: Powered by ElevenLabs' Indian voice model (*Naina*) with sub-second response latency.
 - **Twilio PSTN Gateway Integration**: Connected via Twilio carrier SIP trunking to dial cellular mobile numbers (`+91...`).
 - **Conversational Prompt Optimization**: Enforces strict turn-taking rules (1–2 short sentences per turn, <20 words max) to eliminate long monologues and maintain natural phone conversational pacing.
 - **Post-Call Lead Qualification**: Runs post-call analysis to summarize four key metrics (*Work required*, *Start timeline*, *Meeting agreement*, *Time slot preference*).
@@ -27,7 +27,7 @@ The system was initially built using **Bland AI** and subsequently migrated to *
 ### Rationale for Migration
 
 1. **Superior Hindi and Hinglish Accent Synthesis**
-   Bland AI's internal speech synthesis generated flatter, monotone inflections when handling Indian names and Hinglish phrases. Migrating to Vapi AI enabled direct integration with **ElevenLabs Multilingual v2 models** (*Aditi*), delivering natural phonetic pronunciation, realistic intonations, and authentic conversational fillers (*"haan"*, *"theek hai"*).
+   Bland AI's internal speech synthesis generated flatter, monotone inflections when handling Indian names and Hinglish phrases. Migrating to Vapi AI enabled direct integration with **ElevenLabs Multilingual v2 models** (*Naina*), delivering natural phonetic pronunciation, realistic intonations, and authentic conversational fillers (*"haan"*, *"theek hai"*).
 
 2. **Carrier Control via Twilio PSTN Integration**
    Bland AI provided limited control over outbound caller IDs and underlying carrier trunks. Vapi AI allowed bridging a dedicated **Twilio PSTN gateway**, giving complete visibility over SIP signaling, carrier routing, and call log diagnostics for Indian cellular networks.
