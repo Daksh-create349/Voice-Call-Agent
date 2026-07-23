@@ -331,7 +331,56 @@ def get_call(call_id):
             response = http_requests.get(f"https://api.vapi.ai/call/{call_id}", headers=vapi_headers(), timeout=15)
             raw      = response.json()
             status   = (raw.get("status") or "").lower()
+            ended_reason = (raw.get("endedReason") or "").lower()
             is_done  = status in ["ended", "completed"]
+
+            # If Twilio trial dropped/failed unverified call, auto-fallback to Bland AI
+            if is_done and "twilio" in ended_reason and "fail" in ended_reason and not record.get("fallback_triggered"):
+                phone_num = record.get("phone")
+                name_val  = record.get("name", "")
+                if phone_num and BLAND_API_KEY:
+                    try:
+                        bland_payload = {
+                            "phone_number":      phone_num,
+                            "task":              TASK.strip(),
+                            "first_sentence":    f"Hi {name_val}, this is Aanya calling from Sunrise Interiors for your enquiry!" if name_val else "Hi, this is Aanya calling from Sunrise Interiors for your enquiry!",
+                            "voice":             BLAND_VOICE,
+                            "language":          "hi",
+                            "wait_for_greeting": True,
+                            "max_duration":      3,
+                            "record":            True
+                        }
+                        fb_resp = http_requests.post(BLAND_API_URL, json=bland_payload, headers=bland_headers(), timeout=10)
+                        if fb_resp.ok:
+                            fb_data = fb_resp.json()
+                            new_call_id = fb_data.get("call_id")
+                            if new_call_id:
+                                upsert_record({
+                                    "call_id":            call_id,
+                                    "fallback_triggered": True,
+                                    "fallback_call_id":   new_call_id
+                                })
+                                upsert_record({
+                                    "call_id":      new_call_id,
+                                    "provider":     "bland",
+                                    "name":         name_val,
+                                    "phone":        phone_num,
+                                    "initiated_at": datetime.now(timezone.utc).isoformat(),
+                                    "status":       "initiated",
+                                    "call_length":  None,
+                                    "transcript":   [],
+                                    "analysis":     None,
+                                })
+                                return jsonify({
+                                    "status":        "initiated",
+                                    "fallback":      True,
+                                    "call_id":       new_call_id,
+                                    "call_length":  None,
+                                    "transcript":   [],
+                                    "raw":           fb_data
+                                }), 200
+                    except Exception:
+                        pass
 
             transcript  = parse_vapi_transcript(raw)
             call_length = parse_vapi_duration(raw)
@@ -354,6 +403,7 @@ def get_call(call_id):
 
         except Exception as exc:
             return jsonify({"error": f"Failed to fetch Vapi call: {str(exc)}"}), 500
+
 
     else:
         # Bland fallback
