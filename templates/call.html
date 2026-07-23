@@ -725,14 +725,19 @@
       }
     }
 
-    function startPolling(callId) {
-      let tries = 0;
+    function startPolling(initialCallId) {
+      // Use a mutable ref so the Bland fallback call_id is reliably tracked
+      // across every tick of the interval — reassigning a plain `let` inside
+      // a closure can silently break when captured by value in certain engines.
+      const ref  = { callId: initialCallId };
+      let tries  = 0;
+      let switchedToFallback = false;
 
       const interval = setInterval(async () => {
         tries++;
 
         try {
-          const res  = await fetch(`/api/call/${callId}`);
+          const res  = await fetch(`/api/call/${ref.callId}`);
           const data = await res.json();
 
           if (!res.ok) {
@@ -743,10 +748,19 @@
             return;
           }
 
-          if (data.fallback && data.call_id) {
-            callId = data.call_id;
+          // Backend detected Vapi failure and triggered Bland backup call.
+          // Switch tracking to the new Bland call_id and keep the soundwave alive.
+          if (data.fallback && data.call_id && data.call_id !== ref.callId) {
+            ref.callId = data.call_id;
+            switchedToFallback = true;
             tries = 0;
-            setStatus('calling', 'Connecting call via backup telecom carrier…');
+            setStatus('calling', '📞 Connecting via backup carrier — your phone will ring shortly…');
+            return;
+          }
+
+          // While we're in the fallback phase, keep waiting (don't mark done yet)
+          if (switchedToFallback && (data.status || '').toLowerCase() === 'initiated') {
+            setStatus('calling', '📞 Backup call initiated — ringing your phone…');
             return;
           }
 
@@ -764,15 +778,12 @@
             } else {
               setStatus('success', '✅ Call completed successfully!');
             }
-            renderTranscript(data, callId);
+            renderTranscript(data, ref.callId);
             return;
           }
 
-
-
-
           const elapsed = tries * (POLL_MS / 1000);
-          setStatus('calling', `Call in progress… (${elapsed}s elapsed, status: ${callStatus || 'queued'})`);
+          setStatus('calling', `Call in progress… (${elapsed}s elapsed)`);
 
         } catch (err) {}
 

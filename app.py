@@ -326,6 +326,19 @@ def get_call(call_id):
 
     if provider == "vapi":
         try:
+            # If fallback was already triggered for this call, immediately return
+            # the Bland call_id so the frontend tracks the correct call.
+            # This prevents the "call ended" flash before the phone even rings.
+            if record.get("fallback_triggered") and record.get("fallback_call_id"):
+                return jsonify({
+                    "status":      "initiated",
+                    "fallback":    True,
+                    "call_id":     record["fallback_call_id"],
+                    "call_length": None,
+                    "transcript":  [],
+                    "raw":         {},
+                }), 200
+
             response = http_requests.get(f"https://api.vapi.ai/call/{call_id}", headers=vapi_headers(), timeout=15)
             raw      = response.json()
             status   = (raw.get("status") or "").lower()
