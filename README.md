@@ -1,27 +1,43 @@
 # Sunrise Interiors — AI-Powered Outbound Voice Call System
 
-A production-ready, multi-page outbound voice calling platform built with **Flask**, **Vapi AI**, **ElevenLabs**, and **Twilio PSTN**. Designed for **Sunrise Interiors**, the system eliminates lead drop-off by instantly triggering an AI voice consultant (**Aanya**) the moment a prospective client submits their phone number. 
+An enterprise-grade outbound voice calling platform built with **Flask**, **Vapi AI**, **ElevenLabs**, and **Twilio PSTN**. Designed for **Sunrise Interiors**, the system eliminates prospective client drop-off by automatically triggering an AI voice agent (**Aanya**) the moment a user submits an inquiry on the website.
 
-The AI agent dials the user's mobile phone within seconds, conducts a natural, concise qualification conversation in **Hindi, Hinglish, or English**, and streams live transcripts, call audio waveforms, and structured 2x2 lead analytics to a modern web interface.
-
----
-
-## 📸 Key Features
-
-- **Luxury Light-Mode Design System**: Built with Google Fonts (*Outfit* + *Plus Jakarta Sans*), warm porcelain ivory aesthetics, and glassmorphic UI components.
-- **Multi-Page Architecture**:
-  - `/` — **Interactive Hero Landing Page**: Features a 30-second budget estimator, signature design style explorer (*Modern Japandi*, *Contemporary Indian Luxury*, *Warm Scandinavian*, *Neoclassical Opulence*), and client statistics.
-  - `/call` — **AI Voice Calling Portal**: Dedicated portal with instant call submission form, live audio wave visualizer, real-time transcript speech bubbles, lead qualification grid, and history logs.
-- **Vapi AI + ElevenLabs Speech Engine**: Powered by ElevenLabs' Indian voice model (*Aditi*) with sub-second response latency.
-- **Twilio PSTN Gateway**: Connected via Twilio carrier integration to dial real cellular mobile numbers (`+91...`).
-- **Concise Turn-Taking Prompt Directives**: Enforces 1–2 short sentences per turn (<20 words) and single-question hand-offs to eliminate robot monologues.
-- **Post-Call Lead Qualification**: Runs post-call NLP analysis to summarize 4 key lead metrics (*Work required*, *Start timeline*, *Meeting agreement*, *Time slot preference*).
-- **Persistent Data Store**: Atomic upsert transactions persisted to `call_history.json`.
-- **Cloud Deployment Ready**: Pre-configured with `gunicorn`, `Procfile`, and 100% free deployment support on **Render.com**.
+The AI agent places a real cellular phone call to the user within seconds, conducts a natural qualification dialogue in **Hindi, Hinglish, or English**, and streams live conversation transcripts, call status updates, and structured 2x2 lead analytics to a web interface.
 
 ---
 
-## 🏗️ System Architecture
+## Technical Overview & Features
+
+- **Architectural Design System**: Clean, white-theme layout with Google Fonts (*Outfit* and *Plus Jakarta Sans*), glassmorphic containers, and responsive UI components.
+- **Multi-Page Routing**:
+  - `/` — **Landing Page**: Features a 30-second flat budget estimator, signature design style explorer (*Modern Japandi*, *Contemporary Indian Luxury*, *Warm Scandinavian*, *Neoclassical Opulence*), and brand statistics.
+  - `/call` — **AI Voice Portal**: Dedicated portal containing the outbound call trigger form, live audio wave visualizer, real-time transcript speech bubbles, lead qualification summary, and call history logs.
+- **Vapi AI + ElevenLabs Engine**: Powered by ElevenLabs' Indian voice model (*Aditi*) with sub-second response latency.
+- **Twilio PSTN Gateway Integration**: Connected via Twilio carrier SIP trunking to dial cellular mobile numbers (`+91...`).
+- **Conversational Prompt Optimization**: Enforces strict turn-taking rules (1–2 short sentences per turn, <20 words max) to eliminate long monologues and maintain natural phone conversational pacing.
+- **Post-Call Lead Qualification**: Runs post-call analysis to summarize four key metrics (*Work required*, *Start timeline*, *Meeting agreement*, *Time slot preference*).
+- **Persistence Layer**: Atomic upsert transactions persisted to a local `call_history.json` datastore.
+
+---
+
+## Architectural Migration: Bland AI to Vapi AI
+
+The system was initially built using **Bland AI** and subsequently migrated to **Vapi AI** combined with **Twilio PSTN** and **ElevenLabs**.
+
+### Rationale for Migration
+
+1. **Superior Hindi and Hinglish Accent Synthesis**
+   Bland AI's internal speech synthesis generated flatter, monotone inflections when handling Indian names and Hinglish phrases. Migrating to Vapi AI enabled direct integration with **ElevenLabs Multilingual v2 models** (*Aditi*), delivering natural phonetic pronunciation, realistic intonations, and authentic conversational fillers (*"haan"*, *"theek hai"*).
+
+2. **Carrier Control via Twilio PSTN Integration**
+   Bland AI provided limited control over outbound caller IDs and underlying carrier trunks. Vapi AI allowed bridging a dedicated **Twilio PSTN gateway**, giving complete visibility over SIP signaling, carrier routing, and call log diagnostics for Indian cellular networks.
+
+3. **Sub-500ms Response Latency and Barge-In Detection**
+   Vapi AI's orchestration architecture provided sub-500ms turn-taking latency. It natively handles **barge-in detection**—if a user interrupts the AI mid-sentence, Vapi instantly halts audio playback and processes the caller's input without clipping.
+
+---
+
+## System Architecture
 
 ```
                                   +------------------------------------+
@@ -56,104 +72,83 @@ The AI agent dials the user's mobile phone within seconds, conducts a natural, c
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Voice Call Agent/
 ├── app.py                  # Main Flask application server & API routes
 ├── requirements.txt        # Python dependencies (Flask, CORS, Requests, Gunicorn)
-├── Procfile                # Cloud deployment process file for Render / Heroku
-├── .env                    # Environment variables (Vapi, Twilio, Bland credentials)
-├── .env.example            # Environment template file
+├── Procfile                # Production process file
+├── .env                    # Environment configuration
+├── .env.example            # Environment template
 ├── call_history.json       # Persistent local JSON record store
 ├── templates/
-│   ├── index.html          # Main luxury landing page with interactive widgets
-│   └── call.html           # Dedicated AI Voice Calling Hub & live transcript portal
+│   ├── index.html          # Main luxury landing page
+│   └── call.html           # Dedicated AI Voice Calling Hub
 └── venv/                   # Virtual environment
 ```
 
 ---
 
-## 🚀 API Reference
+## API Reference
 
-### Page Routes
-- `GET /` — Renders the main Sunrise Interiors luxury landing page.
+### Application Routes
+- `GET /` — Renders the main Sunrise Interiors landing page.
 - `GET /call` — Renders the dedicated AI Voice Calling Portal.
 
-### API Endpoints
-- `POST /api/call` — Accepts `{ "name": "Rahul", "phone_number": "+919876543210" }` and dispatches an outbound Vapi/Bland call.
-- `GET /api/call/<call_id>` — Fetches live call status, audio duration, and real-time transcript.
+### REST API Endpoints
+- `POST /api/call` — Accepts `{ "name": "Rahul", "phone_number": "+919876543210" }` and dispatches an outbound call.
+- `GET /api/call/<call_id>` — Fetches call status, duration, and real-time transcript.
 - `POST /api/call/<call_id>/analyze` — Parses transcript data and returns structured 2x2 lead qualification answers.
 - `GET /api/history` — Returns all stored call records, newest first.
-- `POST /api/history/refresh` — Scans stuck or completed calls and backfills transcripts/durations upon page reload.
+- `POST /api/history/refresh` — Scans active calls and backfills transcripts/durations upon page reload.
 
 ---
 
-## ⚙️ Setup and Installation
+## Setup and Installation
 
-### 1. Prerequisites
+### Prerequisites
 - Python 3.9 or higher
-- Vapi AI Account ([vapi.ai](https://vapi.ai))
-- Twilio Trial Account ([twilio.com](https://twilio.com))
+- Vapi AI Account
+- Twilio Account (with configured Account SID, Auth Token, and Phone Number)
 
-### 2. Installation
-```bash
-# Clone repository
-git clone https://github.com/your-username/Voice-Call-Agent.git
-cd "Voice Call Agent"
+### Installation Steps
 
-# Activate virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 3. Environment Configuration
-Create a `.env` file in the project root:
-
-```env
-TELEPHONY_PROVIDER=vapi
-
-# Vapi Credentials
-VAPI_API_KEY=your_vapi_private_api_key
-VAPI_ASSISTANT_ID=your_vapi_assistant_id
-VAPI_PHONE_NUMBER_ID=your_vapi_twilio_phone_number_id
-
-# Optional Bland AI Fallback
-BLAND_API_KEY=org_your_bland_key
-BLAND_VOICE=095a1518-ecdf-4870-a5ff-c74b43a08764
-
-PORT=5001
-```
-
-### 4. Running Locally
-```bash
-python app.py
-```
-Open **[http://127.0.0.1:5001](http://127.0.0.1:5001)** in your browser.
-
----
-
-## ☁️ 100% Free Cloud Deployment (Render.com)
-
-1. Push your code to GitHub:
+1. **Clone the repository:**
    ```bash
-   git add .
-   git commit -m "Deploy Sunrise Interiors Voice Agent"
-   git push origin main
+   git clone https://github.com/your-username/Voice-Call-Agent.git
+   cd "Voice Call Agent"
    ```
-2. Log into **[Render.com](https://render.com)** → Click **New +** → **Web Service**.
-3. Connect your GitHub repository and set:
-   - **Runtime:** `Python 3`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `gunicorn app:app`
-4. Add your `.env` keys under **Environment Variables**.
-5. Click **Create Web Service** to receive your live SSL domain (`https://your-app.onrender.com`).
+
+2. **Configure virtual environment:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables:**
+   Create a `.env` file in the project root:
+   ```env
+   TELEPHONY_PROVIDER=vapi
+   VAPI_API_KEY=your_vapi_private_api_key
+   VAPI_ASSISTANT_ID=your_vapi_assistant_id
+   VAPI_PHONE_NUMBER_ID=your_vapi_twilio_phone_number_id
+   PORT=5001
+   ```
+
+5. **Run the application:**
+   ```bash
+   python app.py
+   ```
+   Access the application at `http://127.0.0.1:5001`.
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. Developed for Sunrise Interiors AI Voice Automation.
