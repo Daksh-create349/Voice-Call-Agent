@@ -476,11 +476,52 @@ def analyze_call(call_id):
         full_text  = " ".join([u.get("text", "") for u in transcript]) if isinstance(transcript, list) else str(transcript)
 
         # High quality fallback extraction for lead summary
+        ft = full_text.lower()
+
+        # Detect timeline
+        if "today" in ft or "aaj" in ft:
+            timeline = "Today"
+        elif "tomorrow" in ft or "kal" in ft:
+            timeline = "Tomorrow"
+        elif "month" in ft:
+            timeline = "In 1-2 months"
+        elif "week" in ft and "next" in ft:
+            timeline = "Next week"
+        else:
+            timeline = "Next week"
+
+        # Detect time/day preference
+        if "today" in ft or "aaj" in ft:
+            time_pref = "Today itself"
+        elif "tomorrow" in ft or "kal" in ft:
+            if "morning" in ft or "subah" in ft:
+                time_pref = "Tomorrow morning"
+            elif "evening" in ft or "shaam" in ft:
+                time_pref = "Tomorrow evening"
+            else:
+                time_pref = "Tomorrow"
+        elif "weekend" in ft:
+            if "morning" in ft or "subah" in ft:
+                time_pref = "Weekend morning"
+            else:
+                time_pref = "Weekend evening"
+        elif "weekday" in ft or "working day" in ft:
+            if "morning" in ft or "subah" in ft:
+                time_pref = "Weekday morning"
+            else:
+                time_pref = "Weekday evening"
+        elif "morning" in ft or "subah" in ft:
+            time_pref = "Morning"
+        elif "evening" in ft or "shaam" in ft:
+            time_pref = "Evening"
+        else:
+            time_pref = "Flexible"
+
         answers = [
-            "Full home interior" if "full" in full_text.lower() or "home" in full_text.lower() else "Kitchen / Living room",
-            "In 1-2 months" if "month" in full_text.lower() else "Next week",
-            True if any(word in full_text.lower() for word in ["yes", "sure", "okay", "haan", "theek", "agree"]) else False,
-            "Weekend morning" if "weekend" in full_text.lower() else "Weekday evening"
+            "Full home interior" if "full" in ft or "home" in ft else "Kitchen / Living room",
+            timeline,
+            True if any(word in ft for word in ["yes", "sure", "okay", "haan", "theek", "agree"]) else False,
+            time_pref,
         ]
 
         analysis = {
