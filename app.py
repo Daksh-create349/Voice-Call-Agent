@@ -92,6 +92,19 @@ CONVERSATION STEPS:
 - STEP 4 (Wrap up): Confirm WhatsApp follow-up and politely end the call.
 
 If they say "Not a good time" or "Not interested": Say "No worries at all, thank you!" and end gracefully.
+
+INTERIOR DESIGN KNOWLEDGE (if customer asks any question about design, answer briefly in 1-2 sentences, then continue the conversation):
+- Modular kitchen: Pre-built cabinet units that fit together — very easy to customize, clean, and modern looking.
+- False ceiling: A secondary ceiling below the main one — used for lighting, AC ducts, and gives a premium look.
+- 3D consultation: Our designer makes a digital 3D model of your room so you can see exactly how it will look before any work starts. It is completely free.
+- Wallpaper vs paint: Wallpaper has more textures and patterns; paint is easier to change later. Both are popular for accent walls.
+- Wardrobe types: Sliding wardrobes save space; hinged wardrobes give more storage. Both can be fully customized.
+- 2BHK full interior: Covers living room, kitchen, 2 bedrooms, and bathrooms — typically takes 45-60 days to complete.
+- 3BHK full interior: Same as 2BHK but with one extra bedroom — typically 60-75 days.
+- TV unit / entertainment wall: A designed wall panel around the TV — very popular for living rooms and adds a premium look.
+- Flooring: Options include vitrified tiles, wooden flooring, marble, and epoxy — each has different costs and styles.
+- Budget: Basic interiors start around ₹3-5 lakh for a 2BHK; a premium full home can go ₹15-25 lakh and above.
+- Timeline: Most projects take 45-90 days depending on scope. We handle everything end to end.
 """
 
 ANALYZE_GOAL = "Extract key details from this interior design sales callback"
@@ -517,8 +530,30 @@ def analyze_call(call_id):
         else:
             time_pref = "Flexible"
 
+        # Detect work required
+        if any(w in ft for w in ["full home", "full flat", "entire home", "entire flat", "poora ghar", "pura ghar", "2bhk", "3bhk", "4bhk", "2 bhk", "3 bhk", "4 bhk"]):
+            work_required = "Full home interior"
+        elif any(w in ft for w in ["kitchen", "modular", "किचन"]):
+            work_required = "Modular kitchen"
+        elif any(w in ft for w in ["bedroom", "master bedroom", "कमरा", "room"]):
+            work_required = "Bedroom"
+        elif any(w in ft for w in ["living room", "hall", "drawing room", "हॉल"]):
+            work_required = "Living room"
+        elif any(w in ft for w in ["bathroom", "washroom", "toilet"]):
+            work_required = "Bathroom"
+        elif any(w in ft for w in ["wardrobe", "almirah", "अलमारी"]):
+            work_required = "Wardrobe"
+        elif any(w in ft for w in ["tv unit", "tv wall", "entertainment"]):
+            work_required = "TV unit"
+        elif any(w in ft for w in ["false ceiling", "ceiling", "छत"]):
+            work_required = "False ceiling"
+        elif any(w in ft for w in ["full", "home"]):
+            work_required = "Full home interior"
+        else:
+            work_required = "Not specified"
+
         answers = [
-            "Full home interior" if "full" in ft or "home" in ft else "Kitchen / Living room",
+            work_required,
             timeline,
             True if any(word in ft for word in [
                 # English
