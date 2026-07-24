@@ -520,7 +520,14 @@ def analyze_call(call_id):
         answers = [
             "Full home interior" if "full" in ft or "home" in ft else "Kitchen / Living room",
             timeline,
-            True if any(word in ft for word in ["yes", "sure", "okay", "haan", "theek", "agree"]) else False,
+            True if any(word in ft for word in [
+                # English
+                "yes", "sure", "okay", "ok", "agree", "sounds good", "perfect", "great",
+                # Romanized Hinglish
+                "haan", "han", "theek", "thik", "bilkul", "zaroor", "hoji", "hoji", "ho ji",
+                # Devanagari Hindi (actual script from STT)
+                "हाँ", "हां", "हा", "ठीक", "बिल्कुल", "ज़रूर", "जरूर", "हो जी", "होजी",
+            ]) else False,
             time_pref,
         ]
 
